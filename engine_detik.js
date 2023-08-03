@@ -28,7 +28,7 @@ const detikcom = async (link) => {
     const tanggal = await page.evaluate(() => { return document.querySelector('.detail__date')?.textContent?.trim() || null; });
 
     var titleText = String(jdl).replace(":", "-").replace("?", "");
-    console.log(titleText);
+    // console.log(titleText);
 
     await browser.close();
     var selesai = performance.now();
@@ -52,7 +52,6 @@ const detikcom = async (link) => {
 
     fs.writeFile(`./detik/${titleText}.json`, final, (err) => {
       if (err) throw err;
-      console.log('Done');
     });
   } catch (err) {
     console.error(`Error processing link: ${link}`);

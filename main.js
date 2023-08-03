@@ -1,64 +1,63 @@
-const { Worker, isMainThread, parentPort } = require('worker_threads');
-const detikcom = require('./detik');
+const puppeteer = require('puppeteer');
+const { performance } = require('perf_hooks');
+const fs = require('fs');
+const blacklistedWord = ['ADVERTISEMENT', 'SCROLL TO RESUME CONTENT', 'Saksikan Live DetikPagi:'];
 
-const links = [
-    "https://news.detik.com/pemilu/d-6856302/psi-kini-mesra-dengan-prabowo-bagaimana-nasib-baliho-dukung-ganjar",
-    "https://news.detik.com/pemilu/d-6856276/psi-bertemu-prabowo-ppp-tanya-pdip-apa-selama-ini-nggak-komunikasi",
-    "https://news.detik.com/pemilu/d-6856111/pkb-belum-ada-ruang-kompromi-selain-cak-imin-cawapres",
-    "https://news.detik.com/pemilu/d-6856093/wasekjen-pkb-belum-ada-wanprestasi-prabowo-sejak-awal-berkoalisi",
-    "https://www.detik.com/jatim/berita/d-6855135/khofifah-dinilai-masih-bisa-jadi-cawapres-meski-beri-sinyal-maju-pilgub-jatim",
-    "https://www.detik.com/jatim/berita/d-6853717/nasdem-sarankan-anies-rebut-jateng-dan-jatim-jika-mau-jadi-presiden",
-    "https://news.detik.com/pemilu/d-6856022/deddy-sitorus-jokowi-pusing-gibran-jadi-kandidat-cawapres"
-];
+const kompascom = async (link) => {
+    var start = performance.now();
+    const browser = await puppeteer.launch({ headless: false });
+    const page = await browser.newPage();
+    await page.setDefaultNavigationTimeout(0)
 
-const numberOfThreads = 8; 
+    await page.goto(link, { waitUntil: 'networkidle0' });
 
-if (isMainThread) {
-  const numWorkers = Math.min(links.length, numberOfThreads);
-  let workersCreated = 0;
-  let workersFinished = 0;
-  let startTime = process.hrtime();
+    // const adagak = await page.waitForSelector('.detail__body-text.itp_bodycontent');
 
-  for (let i = 0; i < numWorkers; i++) {
-    const worker = new Worker(__filename);
-    workersCreated++;
 
-    worker.on('message', (message) => {
-      console.log(message);
-      workersFinished++;
 
-      if (workersFinished === numWorkers) {
-        const endTime = process.hrtime(startTime);
-        const elapsedSeconds = endTime[0] + endTime[1] / 1e9;
-        console.log(`All workers finished in ${elapsedSeconds.toFixed(2)} seconds.`);
-        process.exit(0);
-      }
-    });
+    // const berita = await page.evaluate(() => {
+    //   const divSelector = '.detail__body-text.itp_bodycontent';
+    //   const pp = document.querySelectorAll(`${divSelector} p`);
+    //   const paragraphTexts = Array.from(pp).map((p) => p.textContent.trim());
+    //   return paragraphTexts;
+    // });
 
-    worker.on('error', (error) => {
-      console.error('Worker error:', error);
-      workersFinished++;
+    // const filteredtext = berita.filter(word => !blacklistedWord.includes(word)).join(' ');
 
-      if (workersFinished === numWorkers) {
-        const endTime = process.hrtime(startTime);
-        const elapsedSeconds = endTime[0] + endTime[1] / 1e9;
-        console.log(`All workers finished in ${elapsedSeconds.toFixed(2)} seconds.`);
-        process.exit(1);
-      }
-    });
+    // var jdl = await page.evaluate(() => { return document.querySelector('.detail__title')?.textContent?.trim() || null; });
+    // const author = await page.evaluate(() => { return document.querySelector('.detail__author')?.textContent?.trim() || null; });
+    // const tanggal = await page.evaluate(() => { return document.querySelector('.detail__date')?.textContent?.trim() || null; });
 
-    worker.postMessage(links[i]);
-  }
-} else {  
+    // var titleText = String(jdl).replace(":", "-").replace("?", "");
+    // console.log(titleText);
 
-  parentPort.on('message', async (link) => {
-    try {
-      await detikcom(link);
-      parentPort.postMessage(`Finished processing link: ${link}`);
-    } catch (error) {
-      parentPort.postMessage(`Error processing link: ${link}`);
-      console.error(`Error processing link: ${link}`);
-      console.error(error);
-    }
-  });
-}
+    // await browser.close();
+    // var selesai = performance.now();
+    // var hit = ((selesai - start) / 1000).toFixed(2);
+
+    // const data = {
+    //   judul: titleText,
+    //   penulis: author,
+    //   waktu: tanggal,
+    //   link: link,
+    //   content: filteredtext,
+    //   crawltime: new Date().toJSON(),
+    //   runtime: hit + " s"
+    // };
+
+    // let final = JSON.stringify(data, null, 2);
+
+    // if (titleText.includes(':')) {
+    //   titleText.replace(":", "-");
+    // }
+
+    // fs.writeFile(`./detik/${titleText}.json`, final, (err) => {
+    //   if (err) throw err;
+    //   console.log('Done');
+    // });
+
+};
+
+// module.exports = kompascom;
+
+kompascom('https://nasional.kompas.com/read/2023/08/03/12590281/ferdinand-hutahaean-ngaku-gantikan-effendi-simbolon-jadi-bacaleg-pdi-p')
