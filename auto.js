@@ -59,4 +59,5 @@ const detikcom = async (link) => {
   }
 };
 
-module.exports = detikcom;
+// module.exports = detikcom;
+

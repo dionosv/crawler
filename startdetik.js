@@ -2,14 +2,26 @@ const { Worker, isMainThread, parentPort } = require('worker_threads');
 const detikcom = require('./engine_detik');
 
 const links = [
-  "https://news.detik.com/berita/d-6856608/polisi-jenguk-sultan-korban-kabel-menjuntai-tawari-perawatan-di-rs-polri",
-  "https://news.detik.com/berita/d-6856614/menag-hingga-ridwan-kamil-merapat-ke-kantor-mahfud-bahas-ponpes-al-zaytun",
-  "https://news.detik.com/berita/d-6856330/guruh-soekarnoputra-soal-sengketa-rumah-awalnya-hanya-pinjam-meminjam-uang",
-  "https://news.detik.com/berita/d-6856428/eks-bupati-ricky-juga-didakwa-tppu-mengalir-ke-brigita-manohara-rp-380-juta",
-  "https://news.detik.com/berita/d-6856541/4-polisi-langkat-disekap-dianiaya-saat-hendak-bekuk-pembunuh-ketua-pac-ipk",
-  "https://finance.detik.com/infrastruktur/d-6856595/menhub-ungkap-operasi-lrt-jabodebek-bisa-mundur-ke-30-agustus",
-  "https://finance.detik.com/berita-ekonomi-bisnis/d-6856399/modus-penipuan-makin-marak-bos-ojk-pun-jadi-sasaran",
-  "https://hot.detik.com/celeb/d-6856481/detik-menegangkan-rendy-kjaernett-gendong-lady-nayoan-dari-mobil-penuh-asap"
+    'https://news.detik.com/pemilu/d-6859356/uu-pemilu-digugat-syarat-usia-capres-cawapres-dinilai-bukan-urusan-mk',
+    'https://news.detik.com/pemilu/d-6859353/said-aqil-kalau-pkb-kalah-berarti-dosa-cak-imin-harus-menang',
+    'https://news.detik.com/pemilu/d-6859319/sandiaga-soal-cawapres-pimpinan-mencalonkan-tapi-aspirasi-rakyat-penting',
+    'https://news.detik.com/pemilu/d-6859299/survei-spin-477-responden-akan-pilih-gibran-jadi-cawapres-prabowo',
+    'https://news.detik.com/pemilu/d-6859228/survei-spin-ini-cawapres-potensial-untuk-prabowo-ganjar-dan-anies',
+    'https://news.detik.com/pemilu/d-6859177/psi-masih-komunikasi-dengan-kakak-kakak-senior-pdip-usai-bertemu-prabowo',
+    'https://news.detik.com/pemilu/d-6859158/cak-imin-kalau-saya-berhasil-berarti-produk-gus-dur',
+    'https://news.detik.com/pemilu/d-6859024/jokowi-lagi-lagi-ingatkan-hati-hati-pilih-pemimpin-ppp-singgung-perubahan',
+    'https://news.detik.com/pemilu/d-6859023/anies-bakal-rutin-temui-pendukung-tiap-jumat-di-rumah-relawan',
+    'https://news.detik.com/pemilu/d-6858955/gugatan-batas-minimal-usia-capres-cawapres-anies-percaya-putusan-mk',
+    'https://news.detik.com/pemilu/d-6858919/ditemani-ahy-anies-bakal-berkunjung-ke-bandung-besok',
+    'https://news.detik.com/pemilu/d-6858910/survei-spin-prabowo-417-ganjar-303-anies-21',
+    'https://news.detik.com/pemilu/d-6858876/anies-tidak-terkejut-golkar-tak-dukung-dirinya-di-pilpres-2024',
+    'https://news.detik.com/pemilu/d-6858847/sudah-2-hari-jokowi-bareng-erick-thohir-rk-sinyal-dukungan-cawapres',
+    'https://news.detik.com/pemilu/d-6858683/pdip-buka-suara-soal-effendi-simbolon-disebut-tak-maju-caleg-dpr-lagi',
+    'https://news.detik.com/pemilu/d-6858669/tipis-tipis-soal-politik-putri-zulhas-ungkap-obrolan-dengan-raffi-ahmad',
+    'https://news.detik.com/pemilu/d-6858659/jubir-anies-sambut-serikat-pekerja-nasional-yang-beralih-dari-ganjar',
+    'https://news.detik.com/pemilu/d-6858654/2-mahasiswa-di-solo-gugat-batas-usia-capres-gibran-bilang-begini',
+    'https://news.detik.com/pemilu/d-6858643/puan-sambut-positif-prabowo-temui-psi-tepis-pdip-tutup-pintu',
+    'https://news.detik.com/pemilu/d-6858579/seru-dan-ngejokes-ini-kata-bintang-emon-hingga-chef-bobon-tentang-prabowo'
 ];
 
 const numberOfThreads = 8; 

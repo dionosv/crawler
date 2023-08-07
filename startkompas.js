@@ -2,12 +2,16 @@ const { Worker, isMainThread, parentPort } = require('worker_threads');
 const kompascom = require('./engine_kompas');
 
 const links = [
-  ,"https://money.kompas.com/read/2023/08/03/123654226/jokowi-minta-masyarakat-maklum-soal-jembatan-lrt-yang-salah-desain?page=all#page2"
-  ,"https://nasional.kompas.com/read/2023/08/03/12590281/ferdinand-hutahaean-mengaku-gantikan-effendi-simbolon-jadi-bacaleg-pdi-p"
-  ,"https://nasional.kompas.com/read/2023/08/02/23221211/didatangi-prabowo-psi-kalau-partai-lain-kita-yang-diminta-ke-sana-kalau"
-  ,"https://nasional.kompas.com/read/2023/08/03/05405481/tni-ungkap-maksud-para-pati-sambangi-gedung-kpk-usai-penetapan-tersangka"
-  ,"https://nasional.kompas.com/read/2023/08/02/16230941/alasan-bareskrim-tahan-panji-gumilang-tidak-kooperatif-dan-dikhawatirkan"
-  ,"https://nasional.kompas.com/read/2023/08/03/06150001/janji-pemerintah-selamatkan-ponpes-al-zaytun-usai-panji-gumilang-jadi"
+  ,"https://medan.kompas.com/read/2023/08/07/081937778/saat-mayor-dedi-dan-anggotanya-geruduk-dan-berdebat-panas-di-mapolrestabes"
+  ,"https://www.kompas.com/tren/read/2023/08/07/110000165/buntut-1.921-peserta-mengundurkan-diri-bkn-beri-informasi-gaji-pada"
+  ,"https://www.kompas.com/tren/read/2023/08/07/090000465/4-perubahan-ujian-praktik-sim-c-terbaru-berlaku-mulai-hari-ini"
+  ,"https://regional.kompas.com/read/2023/08/07/105837578/tki-ilegal-di-malaysia-dan-arab-saudi-banyak-yang-tidak-digaji"
+  ,"https://www.kompas.com/tren/read/2023/08/07/110000165/buntut-1.921-peserta-mengundurkan-diri-bkn-beri-informasi-gaji-pada"
+  ,"https://regional.kompas.com/read/2023/08/07/101918678/guru-smk-yang-celupkan-tangan-siswa-ke-air-panas-mengaku-salah-sebut-untuk"
+  ,"https://regional.kompas.com/read/2023/08/07/113254278/pemkab-manggarai-barat-buat-aturan-warga-yang-memotong-bambu-wajib-menanam"
+  ,"https://tekno.kompas.com/read/2023/08/07/11350437/unboxing-oppo-reno-10-pro-plus-5g-ada-charger-100-watt"
+  ,"https://www.kompas.com/edu/read/2023/08/07/113211371/4-ptn-masih-buka-jurusan-kedokteran-hingga-minggu-kedua-agustus"
+  ,"https://www.kompas.com/hype/read/2023/08/07/112604566/kuasa-hukum-ferry-irawan-berat-beri-nafkah-rp-30-juta-setelah-cerai-dari"
 ];
 
 const numberOfThreads = 8; 
