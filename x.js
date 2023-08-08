@@ -1,33 +1,9 @@
 const { Worker, isMainThread, parentPort } = require('worker_threads');
 const { readFileSync } = require('fs');
 const detikcom = require('./engine_detik');
-
-// const alllinks = [
-//     'https://news.detik.com/pemilu/d-6859356/uu-pemilu-digugat-syarat-usia-capres-cawapres-dinilai-bukan-urusan-mk',
-//     'https://news.detik.com/pemilu/d-6859353/said-aqil-kalau-pkb-kalah-berarti-dosa-cak-imin-harus-menang',
-//     'https://news.detik.com/pemilu/d-6859319/sandiaga-soal-cawapres-pimpinan-mencalonkan-tapi-aspirasi-rakyat-penting',
-//     'https://news.detik.com/pemilu/d-6859299/survei-spin-477-responden-akan-pilih-gibran-jadi-cawapres-prabowo',
-//     'https://news.detik.com/pemilu/d-6859228/survei-spin-ini-cawapres-potensial-untuk-prabowo-ganjar-dan-anies',
-// ];
-
-async function reader(xnumberOfThreads = 10){
-  const data = JSON.parse(readFileSync('./detik/masterlink.json'));
-  var data_link = []
-  const groupedLinks = [];
-  const groupSize = xnumberOfThreads;
-
-  for (let a = 0; a < data.length; a++) {
-    for (let b = 0; b < data[a].length; b++) {
-      data_link.push(data[a][b])
-    }
-  }
-
-  for (let i = 0; i < data_link.length; i += groupSize) {
-    const linkGroup = data_link.slice(i, i + groupSize);
-    groupedLinks.push(linkGroup);
-  }
-  return groupedLinks
-}
+const puppeteer = require('puppeteer');
+const { performance } = require('perf_hooks');
+const fs = require('fs');
 
 async function execute(links, xnumberOfThreads = 10){
   const numberOfThreads = xnumberOfThreads; 
@@ -84,9 +60,47 @@ async function execute(links, xnumberOfThreads = 10){
 }
 
 
-(async() => {
-  const page = 5
-    var alllinks = await reader(page)
-    console.log(alllinks[0])
-    await execute()
+
+async function crawl(loop = 1) {
+  try {
+    var baselink = "https://news.detik.com/pemilu/indeks/" + loop;
+    const browser = await puppeteer.launch({ headless: false });
+    const page = await browser.newPage();
+    await page.setDefaultNavigationTimeout(0);
+
+    await page.goto(baselink, { waitUntil: 'networkidle0' });
+
+    const berita = await page.evaluate(() => {
+      const links = Array.from(document.querySelectorAll('h3.media__title a.media__link')).map(element => element.href);
+      return links;
+    });
+    await browser.close();
+    return berita
+
+  } catch (error) {
+    console.log('Crawler error : ' + error);
+    return [];
+  }
+}
+
+
+async function start(number = 1) {
+    var start = performance.now();  
+  const promises = [];
+
+  for (let i = 1; i <= number; i++) {
+    promises.push(crawl(i))
+  }
+  const results = await Promise.all(promises);
+  // const out_json = JSON.stringify(results)
+  // fs.writeFile('./detik/masterlink.json', out_json, (err) => {
+  //   if (err) throw err;
+  // });
+  console.log('Get link done in '+((performance.now() - start) / 1000).toFixed(2)+' s')
+  return results
+}
+
+(async()=>{
+  const infolink = await start(1)
+  await execute(infolink[0],infolink[0].length)
 })()
