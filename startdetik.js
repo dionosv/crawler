@@ -24,7 +24,7 @@ const links = [
     'https://news.detik.com/pemilu/d-6858579/seru-dan-ngejokes-ini-kata-bintang-emon-hingga-chef-bobon-tentang-prabowo'
 ];
 
-const numberOfThreads = 8; 
+const numberOfThreads = 20; 
 
 if (isMainThread) {
   const numWorkers = Math.min(links.length, numberOfThreads);
