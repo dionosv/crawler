@@ -27,7 +27,7 @@ async function crawl(loop = 1) {
 
 
 async function start(number = 1) {
-    var start = performance.now();  
+  var start = performance.now();  
   const promises = [];
 
   for (let i = 1; i <= number; i++) {
@@ -37,9 +37,9 @@ async function start(number = 1) {
   const out_json = JSON.stringify(results)
   fs.writeFile('./detik/masterlink.json', out_json, (err) => {
     if (err) throw err;
-  });
-//   console.log(out_json)
+  }); 
   console.log('Get link done in '+((performance.now() - start) / 1000).toFixed(2)+' s')
 }
 
-start(5);
+start(5)
+// module.exports = start
