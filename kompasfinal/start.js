@@ -32,9 +32,9 @@ function executeMultiThreaded(links, numThreads) {
     }
   });
 }
-async function crawl(loop = 1) {
+async function crawl(halaman = 1) {
   try {
-    var baselink = "https://news.detik.com/pemilu/indeks/" + loop;
+    var baselink = "https://indeks.kompas.com/?site=news&page=" + halaman;
     const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
     await page.setDefaultNavigationTimeout(0);
@@ -42,12 +42,11 @@ async function crawl(loop = 1) {
     await page.goto(baselink, { waitUntil: 'networkidle0' });
 
     const berita = await page.evaluate(() => {
-      const links = Array.from(document.querySelectorAll('h3.media__title a.media__link')).map(element => element.href);
+      const links = Array.from(document.querySelectorAll('h3.article__title.article__title--medium a.article__link')).map(element => element.href);
       return links;
     });
     await browser.close();
     return berita
-
   } catch (error) {
     console.log('Crawler error : ' + error);
     return [];
@@ -79,6 +78,10 @@ async function runall(berapaindex = 1, berapatabsize = 5) {
   console.log(`${berapaindex} task done in `+((performance.now() - hitstart) / 1000).toFixed(2)+' s')
 }
 
-runall(1,10);
+runall(7,5);
+
+// kompas sekali crawl 15 pages
+// kalo detik 20 detik
+
 
 //note ini tinggal masukin angka di runall(disini), angka tsb per berapa indeks yg mau di scraping, 1 indeks ada 20 link, jadi nanti jalan berapa kali indeks
