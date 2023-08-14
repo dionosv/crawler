@@ -78,7 +78,7 @@ async function runall(berapaindex = 1, berapatabsize = 5) {
   console.log(`${berapaindex} task done in `+((performance.now() - hitstart) / 1000).toFixed(2)+' s')
 }
 
-runall(7,5);
+runall(1,5);
 
 // kompas sekali crawl 15 pages
 // kalo detik 20 detik

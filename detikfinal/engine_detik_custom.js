@@ -27,8 +27,8 @@ const detikcom = async (link) => {
     const author = await page.evaluate(() => { return document.querySelector('.detail__author')?.textContent?.trim() || null; });
     const tanggal = await page.evaluate(() => { return document.querySelector('.detail__date')?.textContent?.trim() || null; });
 
-    var titleText = String(jdl).replace(":", "-").replace("?", "");
-    // console.log(titleText);
+    const illegalCharacters = /[\\/:"*?<>|]/g;
+    var titleText = String(jdl).replace(illegalCharacters, ' ');
 
     await browser.close();
     var selesai = performance.now();

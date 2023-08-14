@@ -79,6 +79,6 @@ async function runall(berapaindex = 1, berapatabsize = 5) {
   console.log(`${berapaindex} task done in `+((performance.now() - hitstart) / 1000).toFixed(2)+' s')
 }
 
-runall(1,10);
+runall(1,5);
 
 //note ini tinggal masukin angka di runall(disini), angka tsb per berapa indeks yg mau di scraping, 1 indeks ada 20 link, jadi nanti jalan berapa kali indeks
