@@ -34,7 +34,9 @@ function executeMultiThreaded(links, numThreads) {
 }
 async function crawl() {
   try {
-    var baselink = "https://nasional.tempo.co/politik";
+    var tgl = new Date().toISOString().split('T')[0]
+    var baselink = `https://www.tempo.co/indeks/${tgl}/nasional/politik`
+
     const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
     await page.setDefaultNavigationTimeout(0);
