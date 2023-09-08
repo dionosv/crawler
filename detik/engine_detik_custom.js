@@ -1,7 +1,6 @@
 const puppeteer = require('puppeteer');
 const { performance } = require('perf_hooks');
 const fs = require('fs');
-const blacklistedWord = ['ADVERTISEMENT', 'SCROLL TO RESUME CONTENT', 'Saksikan Live DetikPagi:'];
 
 const detikcom = async (link) => {
   try {
@@ -15,14 +14,28 @@ const detikcom = async (link) => {
     await page.waitForSelector('.detail__body-text.itp_bodycontent');
 
     const berita = await page.evaluate(() => {
-      const divSelector = '.detail__body-text.itp_bodycontent';
+      const divSelector = 'div.detail__body-text.itp_bodycontent'; 
+      document.querySelectorAll(`${divSelector} table.linksisip, ${divSelector} div.paradetail, ${divSelector} strong, ${divSelector} em`)
+        .forEach((div) => {
+          div.remove();
+        });
+    
       const pp = document.querySelectorAll(`${divSelector} p`);
-      const paragraphTexts = Array.from(pp).map((p) => p.textContent.trim());
-      return paragraphTexts;
+      const paragraphTexts = [];
+    
+      pp.forEach((p) => { 
+        const strongElements = p.querySelectorAll('strong');
+        const emElements = p.querySelectorAll('em');
+        const textContent = p.textContent.trim();
+        
+        if (strongElements.length === 0 && emElements.length === 0 && textContent !== '') {
+          paragraphTexts.push(textContent);
+        }
+      });
+    
+      return paragraphTexts.join(' '); 
     });
-
-    const filteredtext = berita.filter(word => !blacklistedWord.includes(word)).join(' ');
-
+    
     var jdl = await page.evaluate(() => { return document.querySelector('.detail__title')?.textContent?.trim() || null; });
     const author = await page.evaluate(() => { return document.querySelector('.detail__author')?.textContent?.trim() || null; });
     const tanggal = await page.evaluate(() => { return document.querySelector('.detail__date')?.textContent?.trim() || null; });
@@ -39,7 +52,7 @@ const detikcom = async (link) => {
       penulis: author,
       waktu: tanggal,
       link: link,
-      content: filteredtext,
+      content: berita,
       crawltime: new Date().toJSON(),
       runtime: hit + " s"
     };
@@ -53,6 +66,7 @@ const detikcom = async (link) => {
     fs.writeFile(`./detik/${titleText}.json`, final, (err) => {
       if (err) throw err;
     });
+
   } catch (err) {
     console.error(`Error processing link: ${link}`);
     console.error(err);
@@ -60,3 +74,4 @@ const detikcom = async (link) => {
 };
 
 module.exports = detikcom;
+// detikcom('https://news.detik.com/internasional/d-6919675/ancaman-10-tahun-bui-ke-putra-biden-buntut-langgar-aturan-senpi')

@@ -83,7 +83,10 @@ async function runall(berapaindex = 1, berapatabsize = 5) {
     // console.log(links)
     console.log(`Finished task ${i+1} of ${berapaindex}\n\n`)
   }
-  console.log(`${berapaindex} task done in `+((performance.now() - hitstart) / 1000).toFixed(2)+' s')
+    const waktuDetik = (performance.now() - hitstart) / 1000;
+    const waktuMenit = Math.floor(waktuDetik / 60);
+    const detikSisa = (waktuDetik % 60).toFixed(1);
+    console.log(`${berapaindex} task done in ${waktuMenit} m ${detikSisa} s`);
 }
 
 runall(1,5);

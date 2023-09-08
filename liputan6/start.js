@@ -74,7 +74,10 @@ async function runall(berapalink = 1, berapatabsize = 5) {
       await executeMultiThreaded(links[dion], berapatabsize);
       console.log(`Done`)
   }
-  console.log(`${berapalink} links done in `+((performance.now() - hitstart) / 1000).toFixed(2)+' s')
+  const waktuDetik = (performance.now() - hitstart) / 1000;
+  const waktuMenit = Math.floor(waktuDetik / 60);
+  const detikSisa = (waktuDetik % 60).toFixed(1);
+  console.log(`${berapaindex} task done in ${waktuMenit} m ${detikSisa} s`);
 }
 
 // khusus buat liputan6 ada 2 parameter yaitu jumlah links (maksimal 88 aja) sama jumlah tab yang akan dibuka
