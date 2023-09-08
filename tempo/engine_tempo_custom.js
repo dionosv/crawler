@@ -46,7 +46,7 @@ const tempo = async (link) => {
       titleText.replace(":", "-");
     }
 
-    fs.writeFile(`./tempo/${titleText}.json`, final, (err) => {
+    fs.writeFile(`./tempo/tempo/${titleText}.json`, final, (err) => {
       if (err) throw err;
     });
   } catch (err) {

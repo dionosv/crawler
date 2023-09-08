@@ -44,7 +44,7 @@ const jawapos = async (link) => {
 
     let final = JSON.stringify(data, null, 2);
 
-    fs.writeFile(`./jawapos/${titleText}.json`, final, (err) => {
+    fs.writeFile(`./jawapos/jawapos/${titleText}.json`, final, (err) => {
       if (err) throw err;
     });
   } catch (err) {

@@ -63,7 +63,7 @@ const detikcom = async (link) => {
       titleText.replace(":", "-");
     }
 
-    fs.writeFile(`./detik/${titleText}.json`, final, (err) => {
+    fs.writeFile(`./detik/detik/${titleText}.json`, final, (err) => {
       if (err) throw err;
     });
 

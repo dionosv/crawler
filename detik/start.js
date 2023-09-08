@@ -9,7 +9,7 @@ function executeMultiThreaded(links, numThreads) {
       let workersFinished = 0;
 
       for (let i = 0; i < numWorkers; i++) {
-        const worker = new Worker('./worker.js', { workerData: { link: links[i], nomor: i + 1 } });
+        const worker = new Worker('./detik/worker.js', { workerData: { link: links[i], nomor: i + 1 } });
 
         worker.on('message', (message) => {
           console.log(message);
@@ -62,7 +62,7 @@ function splitArray(array, chunkSize) {
   return result;
 }
 
-async function runall(berapaindex = 1, berapatabsize = 5) {
+const rundetik = async (berapaindex = 1, berapatabsize = 5) => {
   var hitstart = performance.now(); 
   console.log(`\n${berapaindex} task pending`)
   for (let i = 0; i < berapaindex; i++) {
@@ -84,6 +84,6 @@ async function runall(berapaindex = 1, berapatabsize = 5) {
 
 }
 
-runall(1,5);
+module.exports = rundetik;
 
-//note ini tinggal masukin angka di runall(disini), angka tsb per berapa indeks yg mau di scraping, 1 indeks ada 20 link, jadi nanti jalan berapa kali indeks
+//note ini tinggal masukin angka di rundetik(disini), angka tsb per berapa indeks yg mau di scraping, 1 indeks ada 20 link, jadi nanti jalan berapa kali indeks

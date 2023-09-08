@@ -1,7 +1,6 @@
 const puppeteer = require('puppeteer');
 const { performance } = require('perf_hooks');
 const fs = require('fs');
-const blacklistedWord = ['ADVERTISEMENT', 'SCROLL TO RESUME CONTENT', 'Saksikan Live DetikPagi:'];
 
 const liputan6 = async (link) => {
   try {
@@ -50,7 +49,7 @@ const liputan6 = async (link) => {
 
     let final = JSON.stringify(data, null, 2);
 
-    fs.writeFile(`./liputan6/${titleText}.json`, final, (err) => {
+    fs.writeFile(`./liputan6/liputan6/${titleText}.json`, final, (err) => {
       if (err) throw err;
     });
   } catch (err) {

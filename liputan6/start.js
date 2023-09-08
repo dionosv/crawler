@@ -10,7 +10,7 @@ function executeMultiThreaded(links, numThreads) {
       let workersFinished = 0;
 
       for (let i = 0; i < numWorkers; i++) {
-        const worker = new Worker('./worker.js', { workerData: { link: links[i], nomor: i + 1 } });
+        const worker = new Worker('./liputan6/worker.js', { workerData: { link: links[i], nomor: i + 1 } });
 
         worker.on('message', (message) => {
           console.log(message);
@@ -65,10 +65,10 @@ function splitArray(array, chunkSize) {
   return result;
 }
 
-async function runall(berapalink = 1, berapatabsize = 5) {
+const runliputan6 = async (maksimallink = 1, berapatabsize = 5) => {
   var hitstart = performance.now(); 
-  console.log(`\n${berapalink} links pending`)
-  const links = await splitArray(await crawl(berapalink), berapatabsize)
+  console.log(`\n${maksimallink} links pending`)
+  const links = await splitArray(await crawl(maksimallink), berapatabsize)
   for (let dion = 0; dion < links.length; dion++) {
       console.log(`\nExecuting task ${dion+1} of ${links.length}`)
       await executeMultiThreaded(links[dion], berapatabsize);
@@ -77,9 +77,9 @@ async function runall(berapalink = 1, berapatabsize = 5) {
   const waktuDetik = (performance.now() - hitstart) / 1000;
   const waktuMenit = Math.floor(waktuDetik / 60);
   const detikSisa = (waktuDetik % 60).toFixed(1);
-  console.log(`${berapaindex} task done in ${waktuMenit} m ${detikSisa} s`);
+  console.log(`${maksimallink} task done in ${waktuMenit} m ${detikSisa} s`);
 }
 
 // khusus buat liputan6 ada 2 parameter yaitu jumlah links (maksimal 88 aja) sama jumlah tab yang akan dibuka
-runall(5,5)
-//note ini tinggal masukin angka di runall(disini), angka tsb per berapa indeks yg mau di scraping, 1 indeks ada 20 link, jadi nanti jalan berapa kali indeks
+module.exports = runliputan6;
+//note ini tinggal masukin angka di runliputan6(disini), angka tsb per berapa indeks yg mau di scraping, 1 indeks ada 20 link, jadi nanti jalan berapa kali indeks

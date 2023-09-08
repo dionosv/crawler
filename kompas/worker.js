@@ -1,5 +1,4 @@
 const { workerData, parentPort } = require('worker_threads');
-// const detikcom = require('./engine_detik_custom');
 const kompascom = require('./engine_kompas_custom')
 
 const link = workerData.link;

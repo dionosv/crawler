@@ -67,7 +67,7 @@ const sindonews = async (link) => {
       titleText.replace(":", "-");
     }
 
-    fs.writeFile(`./sindonews/${titleText}.json`, final, (err) => {
+    fs.writeFile(`./sindonews/sindonews/${titleText}.json`, final, (err) => {
       if (err) throw err;
     });
   } catch (err) {

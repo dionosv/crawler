@@ -9,7 +9,7 @@ function executeMultiThreaded(links, numThreads) {
       let workersFinished = 0;
 
       for (let i = 0; i < numWorkers; i++) {
-        const worker = new Worker('./worker.js', { workerData: { link: links[i], nomor: i + 1 } });
+        const worker = new Worker('./kompas/worker.js', { workerData: { link: links[i], nomor: i + 1 } });
 
         worker.on('message', (message) => {
           console.log(message);
@@ -61,7 +61,7 @@ function splitArray(array, chunkSize) {
   return result;
 }
 
-async function runall(berapaindex = 1, berapatabsize = 5) {
+const runkompas = async (berapaindex = 1, berapatabsize = 5) => {
   var hitstart = performance.now(); 
   console.log(`\n${berapaindex} task pending`)
   for (let i = 0; i < berapaindex; i++) {
@@ -80,11 +80,10 @@ async function runall(berapaindex = 1, berapatabsize = 5) {
   const detikSisa = (waktuDetik % 60).toFixed(1);
   console.log(`${berapaindex} task done in ${waktuMenit} m ${detikSisa} s`);
 }
-
-runall(7,5);
+module.exports = runkompas;
 
 // kompas sekali crawl 15 pages
 // kalo detik 20 detik
 
 
-//note ini tinggal masukin angka di runall(disini), angka tsb per berapa indeks yg mau di scraping, 1 indeks ada 20 link, jadi nanti jalan berapa kali indeks
+//note ini tinggal masukin angka di runkompas(disini), angka tsb per berapa indeks yg mau di scraping, 1 indeks ada 20 link, jadi nanti jalan berapa kali indeks

@@ -71,7 +71,7 @@ const kompascom = async (link) => {
       titleText.replace('"', " ");
     }
 
-    fs.writeFile(`./kompas/${titleText}.json`, final, (err) => {
+    fs.writeFile(`./kompas/kompas/${titleText}.json`, final, (err) => {
       if (err) throw err;
       // console.log('Done');
     });
