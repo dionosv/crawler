@@ -62,16 +62,16 @@ function splitArray(array, chunkSize) {
   return result;
 }
 
-const rundetik = async (berapaindex = 1, berapatabsize = 5) => {
+const rundetik = async (berapaindex = 1, berapatabsize = 5 , mode = false) => {
   var hitstart = performance.now(); 
   console.log(`\n${berapaindex} task pending`)
   for (let i = 0; i < berapaindex; i++) {
     console.log(`Doing task ${i+1} of ${berapaindex}\n`)
-    const links = await splitArray(await crawl(i+1), berapatabsize)
+    const links = await splitArray(await crawl(i+1, mode), berapatabsize)
     for (let index = 0; index < links.length; index++) {
       console.log(`Proccessing MultiThread ${index+1} of ${links.length} (${berapatabsize} Single Thread)`)
       const numThreads=links[index].length
-      await executeMultiThreaded(links[index], numThreads, index+1);
+      await executeMultiThreaded(links[index], numThreads, index+1, mode);
       console.log(`Done\n\n`)
     }
     console.log(`Finished task ${i+1} of ${berapaindex}\n\n`)
